@@ -1,0 +1,34 @@
+module routerconfig {
+    namespace "urn:routerconfig:API-Kurs";
+    prefix "if";
+    import ietf-inet-types {
+        prefix "inet";
+    }
+    container router {
+        container system {
+            leaf hostname {type string;}
+        }
+        container interfaces {
+            list interface {
+                key "name";
+                    leaf name {type string;
+                    mandatory true;
+                    }
+                leaf speed {type uint16;}
+                leaf mtu {type uint16;}
+                leaf ipaddress {type inet:ipv4-address;}
+                leaf netmask {type inet:ipv4-address;}
+                leaf adminup {type boolean;}
+            }
+        }
+        container ospf {
+            leaf rid {type inet:ipv4-address;}
+            list area {
+                key "id";
+                leaf id {type uint16;}
+                leaf-list interface {type leafref {path "/router/interfaces/interface/name";}}
+
+            }
+        }
+    }
+}
